@@ -1,0 +1,75 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>WEB GL TEST</title>
+
+<style>
+canvas {
+	border:1px solid #000;
+	position:relative;
+	margin:0px auto;
+}
+</style>
+<link type="text/css" rel="STYLESHEET" href="theme/default/css/default.css" />
+<link type="text/css" rel="stylesheet" href="libs/jqueryUI/css/ui-lightness/jquery-ui-1.8.14.custom.css" />	
+
+<script type="text/javascript" src="libs/jquery/jquery.js"></script>
+<script type="text/javascript" src="libs/jqueryUI/js/jquery-ui-1.8.14.custom.min.js"></script>
+
+<script type="text/javascript" src="js/sylvester.js"></script>
+<script type="text/javascript" src="js/glUtils.js"></script> 
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/webgl.js"></script>
+<script type="text/javascript" src="js/general.js"></script>
+
+</head>
+<body onload='webGLStart();'>
+
+<!-- <canvas id='v' width="640" height="480">
+	Your browser doesn't appear to support the HTML5 <code>canvas</code> element or WebGL standard.<br>
+	Please update your browser to the lastest version.
+</canvas> -->
+<br />
+<span>bitte schauen Sie im Chrome das Video , wegen habe ich keine OGV video gefunden, zurzeit nur MP4 Video</span>
+<br/>
+<span>bitte wählen Sie das Effect aus:</span>
+<select id="effect" name="effectSelector" onChange="effectChange();">
+	<option name="cm" value="cm" selected>Red/Cyan</option>
+	<option name="sbs" value="sbs">side by side</option>
+</select>
+<div id="videoContainer">
+
+	
+	
+	<canvas id='c' style="border:0px; height:100%; width:100%;">
+		Your browser doesn't appear to support the HTML5 <code>canvas</code> element or WebGL standard.<br>
+		Please update your browser to the lastest version.
+	</canvas>
+	<video id="video" controls="controls" height="360px" width="640px" preload="preload" style="display:none;">
+		<source src="src/mp4/test6.mp4" />
+		<br><h1>Sorry! Your Browser not support HTML5!</h1><br>
+	</video>
+	
+	<div id="status"></div>
+	<div id="controller">
+		<div id="slideBar" class="controlItem"></div>
+		<div id="controlBg" class="controlPanelBg"></div>
+		<div id="control" class="controlPanel">
+			<div id="playButtom" class="controlItem play"></div>
+			<div id="backwardButtom" class="controlItem backward"></div>
+			<div id="forwardButtom" class="controlItem forward"></div>
+			<div id="stopButtom" class="controlItem stop"></div>
+			<div id="repeatButtom" class="controlItemText repeat"></div>
+			<div id="currentTime" class="controlItemText"></div>
+			<div class="controlItemText"> - </div>
+			<div id="duration" class="controlItemText"></div>
+			<div id="soundButtom" class="controlItem soundOn"></div>
+			<div id="soundSlideBar" class="controlItem"></div>
+			<div id="fullScreenButtom" class="controlItem fullScreenOn"></div>
+			<div style="clean:both;"></div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

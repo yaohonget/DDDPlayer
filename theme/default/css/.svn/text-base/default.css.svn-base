@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+
+#videoContainer{ position:relative; }
+#videoContainer > #video { position:absolute; top:0px; left:0px; height:360px; width:640px; z-index:3; }
+#videoContainer > #status { position:absolute; top:45%; left:45%; height:50px; width: 50px; cursor:pointer; z-index:4;}
+#videoContainer > #controller { position:absolute; bottom:0px; height:50px; z-index:4;}
+#controller > #slideBar { opacity:0.5; position:absolute; top:-23px; left:1px; right:1px; width:98%;  }
+#controller > #controlBg { position:absolute; bottom:0px; height:100%; width:100%;  background: url(../images/bg.png) repeat-x; }
+#controller > #control { position:absolute; bottom:0px; height:100%; width:100%; }
+.controlItem, .controlItemText{ cursor:pointer; position:relative; margin:0px 5px; float:left; }
+.controlItemText {padding-top:15px; font-family: Arial, Helvetica, sans-serif;  font-size: 16px; font-weight: bold; color:#FFFFFF;}
+#playButtom, #stopButtom, #forwardButtom, #backwardButtom, #repeatButtom, #fullScreenButtom, #soundButtom ,#soundSlideBar{opacity:0.5; height:50px; width:45px; }
+#repeatButtom{padding-top:0px;}
+#soundSlideBar{padding-top:0px; left:-16px; right:5px; height:0.8em; top:17px; }
+.play, .pause, .stop, .forward, .backward, .repeat, .fullScreenOn, .fullScreenOff, .soundOn, .soundOff{background:url(../images/playerPanel.png) no-repeat; }
+.play { background-position:3% 83%; }
+.pause{background-position:12% 83%; }
+.stop { background-position:20% 83%; }
+.backward { background-position:37% 83%; }
+.forward { background-position:28% 83%; }
+.repeat { background-position:46% 83%; }
+.fullScreenOn{  background-position:93% 83%;  }
+.fullScreenOff{  background-position:86% 83%;  }
+.soundOn{ background-position:63% 83%; }
+.soundOff{ background-position:71% 83%; }

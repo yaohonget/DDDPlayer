@@ -1,0 +1,178 @@
+/*
+ * 
+ error handler
+ */
+function errorHandler(type, tracker, msg){
+	try{
+		if(!type){
+			type = !errorHandlerType?0:errorHandlerType;
+		}
+		if(!tracker){
+			tracker = arguments.callee.name;
+		}
+		if(!msg){
+			msg = "";
+		}
+		
+		var _timer = new Date();
+		if(!_timer){
+			throw("Initailize the Date()-Object failed.");
+		}
+		var _msg = "---> Error:"+_timer.getFullYear()+"/"+(_timer.getMonth()+1)+"/"+_timer.getDate()+"-"+_timer.getHours()+":"+_timer.getMinutes()+":"+_timer.getSeconds()+":"+_timer.getMilliseconds();
+		_msg += " - "+tracker+" - "+msg;
+		
+		if(type == 0){
+			alert(_msg);
+		}
+		else if(type == 1){
+			console.log(_msg);
+			
+		}
+	}
+	catch(e){
+		alert(arguments.callee.name+" - "+e);
+	}
+}
+
+/*
+ * 
+ debug handler
+ */
+function debug(msg, type){
+	try{
+		if(!type){
+			type = !debugHandlerType?0:debugHandlerType;
+		}
+		if(debugFlag){
+			var _timer = new Date();
+			if(!_timer){
+				throw("Initailize the Date()-Object failed.");
+			}
+			var _msg = "---> Debug Start:"+_timer.getFullYear()+"/"+(_timer.getMonth()+1)+"/"+_timer.getDate()+"-"+_timer.getHours()+":"+_timer.getMinutes()+":"+_timer.getSeconds()+":"+_timer.getMilliseconds();
+			console.log(_msg);
+			console.log(msg);
+			_msg = "<--- Debug End";
+			console.log(_msg);
+		}
+	}
+	catch(e){
+		alert(arguments.callee.name+" - "+e);
+	}
+}
+
+/*
+*
+ ajax handler
+*/
+
+function a(url, data, type, async, cache){
+	try{
+		var _response = "";
+		if(!type || (type.toLowerCase() != "post"&&type.toLowerCase() != "get") ){
+			type = "get";
+		}
+		if(!data || data instanceof Object ){
+			data = {};
+		}
+		if(cache != false&&cache != true){
+			cache = true;
+		}
+		
+		var _async;
+		if(async != false&&async != true){
+			_async = true;
+		}
+		else{
+			_async = async==true?true:false;
+		}
+		
+		if (typeof jQuery == 'undefined') {
+			var _xmlHttp;
+			var _url = url;
+			var _parameters = "";
+			
+			try{
+				// Firefox, Opera 8.0+, Safari, IE7
+				_xmlHttp = new XMLHttpRequest();
+			}
+			catch(e){
+				// Old IE
+				try{
+					_xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+			    }
+				catch(e){
+					errorHandler(errorHandlerType, arguments.callee.name, "Your browser does not support XMLHTTP!");
+					return null;  
+			    }
+			}
+			
+			for(var _parameterKey in data){   
+		       if(typeof(data[_parameterKey]) == "function"){     
+		            data[_parameterKey]();    
+		       }
+		       else{     
+		            _parameters += _parameterKey + "=" + data[_parameterKey] + "&";
+		       }
+		    }
+			if(type == 'get'){
+				if(_parameters !== "undefined" && _parameters != null){
+					_url += '?' + _parameters;
+				}
+				_parameters = null;
+			}			
+			_xmlHttp.onreadystatechange = function()
+			{
+				if (_xmlHttp.readyState == 4 && _xmlHttp.status == 200){
+					_response = _xmlHttp.responseText;					
+				}
+			};
+			_xmlHttp.open(type, _url, _async);
+			_xmlHttp.send(_parameters);			
+		} else {
+			$.ajax({
+				type	: type,
+				url		: url,
+				async	: async,
+				data	: data,
+				beforeSend: function() {
+				},
+				success: function(data) {
+					_response = data;
+					
+				},
+				complete: function() {				
+				},
+				error: function() {
+					debug("ajax request error");
+					return null;
+				}
+			});			
+		}
+		return _response;
+	}
+	catch(e){
+		errorHandler(errorHandlerType, arguments.callee.name, e);
+	}
+}
+
+/*
+ * change the degree to the radius
+ */
+function degToRad(degrees) {
+    return degrees * Math.PI / 180;
+}
+
+/*
+ * set the size power of two
+ */
+function isPowerOfTwo(x) {
+    return (x & (x - 1)) == 0;
+}
+ 
+function nextHighestPowerOfTwo(x) {
+    --x;
+    for (var i = 1; i < 32; i <<= 1) {
+        x = x | x >> i;
+    }
+    return x + 1;
+}

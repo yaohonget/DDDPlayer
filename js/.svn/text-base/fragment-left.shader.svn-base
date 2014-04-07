@@ -1,0 +1,16 @@
+// Fragment shader program 
+precision mediump float;
+varying vec4 vColor;
+varying vec2 vTextureCoord;
+uniform sampler2D uSampler;
+
+uniform vec2 uTextureSize;
+uniform float uKernel[9];
+void main(void) {	
+	vec4 color = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+	vec4 tcolor = color;
+	//magenta - im RGB Format R:255 G:0 B:0 oder als #FF0000
+    tcolor.g = 0.0;
+    tcolor.b = 0.0;
+    gl_FragColor = tcolor;
+}

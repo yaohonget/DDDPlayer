@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mediainfo version="2">
+	<configuration>
+		<allowfullscreen>true</allowfullscreen>
+		<showfullscreenbutton>true</showfullscreenbutton>
+		<loop>true</loop>
+		<showstopbutton>false</showstopbutton>
+		<showinfobutton>true</showinfobutton>
+		<showoptionbutton>true</showoptionbutton>
+		<lightsoffenabled>true</lightsoffenabled>
+		<showlightsbutton>true</showlightsbutton>
+		<autolightsoff>false</autolightsoff>
+		<autoplay>false</autoplay>
+		<autoload>false</autoload>
+	</configuration>
+	<active_media title="ISCOPE - MP4 Video Test" author="admin">
+		<media title="ISCOPE - MP4 Video Test" author="admin">
+			<id>4</id>
+			<key>f79103492d53a4d2307baa158947935c</key>
+			<author>admin</author>
+			<title>This is the title of the video</title>
+			<description_pic>src/thumbnail/test.jpg</description_pic>
+			<description>This is a text description for the video.</description>
+			<previewpic>src/thumbnail/test.jpg</previewpic>
+			<file>src/mp4/test.mp4</file>
+		</media>
+	</active_media>
+</mediainfo>
+
+

@@ -1,0 +1,231 @@
+﻿<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="Author" content="Hong,Yao">
+<meta name="Keywords" content="Auf HTML5 und WebGL basierten Web Player">
+<meta name="Description" content="Auf HTML5 und WebGL basierten Web Player">
+<title>Auf HTML5 und WebGL basierten Web Player</title>
+
+<style>
+canvas {
+	border:1px solid #000;
+	position:relative;
+	margin:0px auto;
+}
+</style>
+<link type="text/css" rel="STYLESHEET" href="theme/default/css/default.css" />
+
+<script type="text/javascript" src="js/glMatrix.min.js"></script>
+<script type="text/javascript" src="js/webgl.1.6.js"></script>
+<script type="text/javascript" src="js/player.1.8.js"></script>
+<!--
+<script type="text/javascript" src="js/webgl.min.1.7.js"></script>
+<script type="text/javascript" src="js/player.min.1.9.js"></script>
+-->
+<script type="text/javascript">
+
+</script>
+</head>
+<body>
+	
+	<div id="pl" style="width:600px; height:600px;"></div>
+	<form method="get" action="#">
+		Bitte wählen Sie das Videos : 
+	    <select id="f" name="f" onchange=submit();>
+	    	<option value="">MP4-480*360-sideBySide</option>
+	    	<option value="1">HD MP4-1280*720-sideBySide</option>
+	    	<option value="2">HD MP4-1280*720-aboveUnter-autoplay</option>
+	    	<option value="3">FULL HD MP4-1920*1080-sideBySide-noLight</option>
+	    	<option value="4">FULL HD MP4-1920*1080-aboveUnter-autoplayLightsOff </option>  
+	    	<option value="5">OGV</option> 
+	    	<option value="6">WEBM</option> 
+	    	<option value="7">No Video</option> 
+	    	<option value="8">No XML</option> 		
+	    </select><br />
+	    Bitte wählen Sie gewünschte FPS des Videos : 
+	    <select id="p" name="p" onchange=submit();>
+	    	<option value="15">15</option>
+	    	<option value="20">20</option>
+	    	<option value="25">25</option>
+	    	<option value="30">30</option>	    	
+	    </select><br />
+	    Bitte wählen Sie die Type des Videos : 
+	    <select id="t" name="t" onchange=submit();>
+	    	<option value="true">3D Ein</option>
+	    	<option value="false">3D Aus</option>    	
+	    </select><br />
+	    <input type="submit" value="sumbit" />
+	</form>
+	<script type="text/javascript">
+		function submit(){
+			document.forms[0].submit();		
+		}
+		/*var r = '';
+		for(var i = 1; i<500; i++){
+			r += '.'+ Math.floor(Math.sin(i * 180 / 3.14));
+		}
+		console.log(r);*/
+
+		var $_GET = (function(){
+			var url = window.document.location.href.toString();
+			var u = url.split("?");
+			if(typeof(u[1]) == "string"){
+				u = u[1].split("&");
+				var get = {};
+				for(var i in u){
+					var j = u[i].split("=");
+					get[j[0]] = (j[1].split("#"))[0];
+				}
+				return get;
+			} else {
+				return {};
+			}
+		})();
+		var height = 360;
+		var width = 480;
+			
+		var xmlNum = $_GET['f'] ? $_GET['f'] : '';
+		var xmlUrl = 'xml/vimp' + xmlNum + '.xml';
+		if($_GET['f'] == ''){
+			width = 480;
+			height = 360;
+		}
+		else if($_GET['f'] == '1' || $_GET['f'] == '2' ){
+			width = 1280;
+			height = 720;
+		}
+		else if($_GET['f'] == '3' || $_GET['f'] == '4' ){
+			width = 1920;
+			height = 1080;
+		}
+		
+		var seleUrl = document.getElementById('f');
+		for(var i = 0; i < seleUrl.length; i++){
+			if(xmlNum == seleUrl.options[i].value){
+				seleUrl.options[i].selected = true;
+				break;
+			}
+		}
+		
+		var fps = $_GET['p'] ? $_GET['p'] : '30';
+		var seleFps = document.getElementById('p');
+		for(var i = 0; i < seleFps.length; i++){
+			if(fps == seleFps.options[i].value){
+				seleFps.options[i].selected = true;
+				break;
+			}
+		}
+		
+		var threeD = $_GET['t'] ? $_GET['t'] : 'true';
+		var sele3D = document.getElementById('t');
+		for(var i = 0; i < sele3D.length; i++){
+			if(threeD == sele3D.options[i].value){
+				sele3D.options[i].selected = true;
+				break;
+			}
+		}
+		var threeDMode = threeD == 'true' ? true : false;
+		
+		
+			
+		var langJson = {
+			infoWinTitle : 'Information',
+			optionslooplabel : 'Repeat',
+			optionsautolightsofflabel : 'Auto Light',
+			onofflabel : 'On/Off',
+			aspectratiolabel : 'Aspect Ratio',
+			twoDthreeDlabel : '2D/3D',
+			threeDOnOfflabel : '3D On/Off',
+			videoInputFormatlabel : 'Video Input Format',
+			leftRightlabel : 'Left/Right',
+			aboveUnterlabel : 'Above/Unter',
+			effectlabel : 'Effect',
+			redCyanlabel : 'Red/Cyan(Full Color)',
+			redCyanHalfcolorlabel : 'Red/Cyan(Half Color)',
+			redCyanOpticolorlabel : 'Red/Cyan(Optimized)',
+			greenMagentalabel : 'Green/Magenta',
+			yellowBluelabel : 'Yellow/Blue',
+			rightLeftlabel : 'Right/Left',
+			unterAbovelabel : 'Unter/Above',
+			optionWinTitle : 'Setting',
+			threeDWinTitle : '3D Options',
+			msgWinTitle : 'Message',
+			infoWinTitle : 'Information',
+			columnInterleavedlabel : 'Column Interleaved',
+			rowInterleavedlabel : 'Row Interleaved',
+			originalRatiolabel : 'Original Ratio',
+			swapLeftRightlabel : 'Swap Left/Right-eye-Views',
+			timeForSpacelabel : 'Time-For-Space Animation',
+			noAvaliVideolabel : 'The Video no avaliable.',
+			notSupportForamtlabel : 'The Browser do not support the format of the video.',
+			notFoundVideo : 'The Video file not be found.',
+			unknownErrorlabel : 'Unknown Error.'
+		};
+		var cssJson = {
+			textClass : "text",
+			wrapperClass : "wrappermask",
+			winWrapperClass : "winmask",
+			playerContainerClass : "playerContainer",
+			voteContainerClass : "voteContainer",
+			voteButtomClass : "voteButtom",
+			starClass : "star",
+			unstarClass : "unstar",
+			btnContainerClass : "btnContainer",
+			btnContentClass : "btnContent",
+			btnCheckedClass : "btnChecked",
+			btnUncheckedClass : "btnUnchecked",
+			btnCheckboxClass : "btnCheckbox",
+			winContainerClass : "winContainer",
+			winHeaderClass : "winHeader",
+			winIconClass : "winIcon",
+			winTitleClass : "winTitle",
+			winCloseClass : "winClose",
+			winContentClass : "winContent",
+			msgIconClass : "msgTitleIcon",
+			infoIconClass : "msgTitleIcon",
+			threeDTitleIconClass : "threeDTitleIcon",
+			optionTitleIconClass : "optionTitleIcon",
+			statusContainerClass : "statusContainer",
+			videoStatusContainerClass : "videoStatusContainer",
+			statusButtomClass : "statusButtom",
+			playStatusClass : "playStatus",
+			loadingStatusClass : "loadingStatus",
+			controlContainerClass : "controlContainer",
+			progressbarContainerClass : "progressbarContainer",
+			progressbarBgClass : "progressBarBg",
+			downloadProgresbarClass : "downloadProgressBar",
+			playProgressbarClass : "playProgressBar",
+			controlBenchClass : "controlPanel",
+			controlButtomClass : "controlButtom",
+			playButtomClass : "playButtom",
+			pauseButtomClass : "pauseButtom",
+			soundContainerClass : "soundContainer",
+			soundButtomClass : "controlButtom",
+			volumeButtomClass : ["'muteButtom', 'lowSoundButtom', 'highSoundButtom'"],
+			volumeContainerClass : "volumeContainer",
+			volumeProgressbarClass : "volumeProgressBar",
+			timeContainerClass : "timeContainer",
+			functionContainerClass : "functionContainer",
+			funcLightButtomClass : "lightButtom",
+			funcFullScreenOnButtomClass : "fullScreenOnButtom",
+			funcFullScreenOffButtomClass : "fullScreenOffButtom",
+			funcInfoButtomClass : "infoButtom",
+			funcThreeDButtomClass : "threeDButtom",
+			funcOptionButtomClass : "optionButtom"
+		};
+		var res = _.initPlayer({// true - successful build, false - unsuccessful
+			width : width, // weigh of video
+			height : height, // height of video
+			xmlUrl : xmlUrl, // url of XML
+			threeDMode : threeDMode, //  3D Mode On or Off
+			parentId : 'pl', // the id of parent
+			volume : 0.8, // 0.0 - 1.0
+			langJson : langJson, // language json
+			cssJson : cssJson, // css json
+			framerate : 30, // framerate of video
+			fps : fps // the player fps
+		});
+
+	</script>
+</body>
+</html>
